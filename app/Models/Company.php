@@ -27,4 +27,8 @@ class Company extends Model
     {
         return $query->whereNull('parent_company_id');
     }
+
+    public function childCompaniesIds(){
+       return $this->childCompanies->pluck('id')->flatten();
+    }
 }

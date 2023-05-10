@@ -24,6 +24,8 @@ Route::group(['prefix' => '/company'], function () {
     Route::post('/',[CompanyController::class,'store']);
     Route::post('/{company}',[CompanyController::class,'update']);
     Route::delete('/{company}',[CompanyController::class,'delete']);
+    Route::get('/{company}/charging-stations',[CompanyController::class,'chargingStations']);
+
 });
 
 Route::group(['prefix' => '/station'], function () {
