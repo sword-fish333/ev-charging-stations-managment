@@ -14,7 +14,9 @@ class StationController extends Controller
 {
     public function index()
     {
-        $companies = Company::main()->with('childCompanies')->orderByDesc('id')->get();
+        $companies = Company::main()->with(['childCompanies'=>function($q){
+            return $q->with('Stations');
+        }])->with('Stations')->orderByDesc('id')->get();
         return \response()->json(['success' => true, 'companies' => $companies]);
     }
 

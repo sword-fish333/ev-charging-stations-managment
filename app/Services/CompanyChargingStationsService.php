@@ -20,7 +20,7 @@ class CompanyChargingStationsService
         $company_ids = $company->childCompaniesIds();
         $company_ids->push($company->id);
         $haversine = $this->getHaversineFormula($latitude,$longitude);
-        $stations = Station::whereIn('company_id', $company_ids)->selectRaw("*,
+        $stations = Station::whereIn('company_id', $company_ids->sort())->selectRaw("*,
                                             {$haversine} AS distance")->whereRaw("$haversine<=$radius")->with('Company')->orderBy('distance')->get();
         return $this->formatStations($stations);
     }

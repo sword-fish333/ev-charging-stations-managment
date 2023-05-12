@@ -19,6 +19,11 @@ class Company extends Model
         return $this->hasMany(self::class, 'parent_company_id');
     }
 
+    public function allChildCompanies()
+    {
+        return $this->childCompanies()->with('Stations')->with('allChildCompanies');
+    }
+
     public function Stations()
     {
         return $this->hasMany(Station::class, 'company_id');
@@ -29,11 +34,21 @@ class Company extends Model
         return $query->whereNull('parent_company_id');
     }
 
-    public function childCompaniesIds(){
-       return $this->childCompanies->pluck('id')->flatten();
+    public function childCompaniesIds()
+    {
+        $child_companies = $this->allChildCompanies;
+        if (!$child_companies) {
+            return [];
+        }
+        $ids = $child_companies->pluck('id')->flatten();
+        $child_companies->each(function ($company) use (&$ids) {
+            $ids = $ids->merge($company->childCompaniesIds());
+        });
+        return $ids;
     }
 
-    public function chargingStationsForCoordinates($latitude,$longitude,$radius){
-        return (new CompanyChargingStationsService($this))->getChargingStationsForCoordinates($latitude,$longitude,$radius);
+    public function chargingStationsForCoordinates($latitude, $longitude, $radius): \Illuminate\Support\Collection
+    {
+        return (new CompanyChargingStationsService($this))->getChargingStationsForCoordinates($latitude, $longitude, $radius);
     }
 }

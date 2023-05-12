@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::group(['prefix' => '/company'], function () { //companies CRUD
     Route::get('/',[CompanyController::class,'index']);
-    Route::get('/children/{company_id}',[CompanyController::class,'childCompanies']);
+    Route::get('/{company_id}/children',[CompanyController::class,'childCompanies']);
     Route::post('/',[CompanyController::class,'store']);
     Route::post('/{company}',[CompanyController::class,'update']);
     Route::delete('/{company}',[CompanyController::class,'delete']);

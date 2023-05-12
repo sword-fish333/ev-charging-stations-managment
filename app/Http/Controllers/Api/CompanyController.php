@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreCompanyRequest;
 use App\Models\Company;
-use App\Models\Station;
-use App\Services\CompanyChargingStationsService;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,13 +13,13 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::main()->with(['childCompanies','Stations'])->orderByDesc('id')->get();
+        $companies = Company::main()->with('Stations')->with('allChildCompanies')->orderByDesc('id')->get();
         return \response()->json(['success' => true, 'companies' => $companies]);
     }
 
     public function childCompanies($company_id)
     {
-        $companies = Company::where('parent_company_id', $company_id)->orderByDesc('id')->get();
+        $companies = Company::where('parent_company_id', $company_id)->with('allChildCompanies')->with('Stations')->get(['id','name']);
         return \response()->json(['success' => true, 'child_companies' => $companies]);
     }
 
