@@ -18,17 +18,17 @@ use App\Http\Controllers\Api\StationController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['prefix' => '/company'], function () {
+Route::group(['prefix' => '/company'], function () { //companies CRUD
     Route::get('/',[CompanyController::class,'index']);
     Route::get('/children/{company_id}',[CompanyController::class,'childCompanies']);
     Route::post('/',[CompanyController::class,'store']);
     Route::post('/{company}',[CompanyController::class,'update']);
     Route::delete('/{company}',[CompanyController::class,'delete']);
-    Route::get('/{company}/charging-stations',[CompanyController::class,'chargingStations']);
+    Route::get('/{company}/charging-stations',[CompanyController::class,'chargingStations']); //all charging stations ordered by increasing distance from a company
 
 });
 
-Route::group(['prefix' => '/station'], function () {
+Route::group(['prefix' => '/station'], function () {  //stations CRUD
     Route::get('/',[StationController::class,'index']);
     Route::post('/',[StationController::class,'store']);
     Route::post('/{station}',[StationController::class,'update']);

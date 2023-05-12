@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CompanyChargingStationsService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,5 +31,9 @@ class Company extends Model
 
     public function childCompaniesIds(){
        return $this->childCompanies->pluck('id')->flatten();
+    }
+
+    public function chargingStationsForCoordinates($latitude,$longitude,$radius){
+        return (new CompanyChargingStationsService($this))->getChargingStationsForCoordinates($latitude,$longitude,$radius);
     }
 }
