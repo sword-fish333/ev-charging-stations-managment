@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('station', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('address')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->foreignId('company_id')->constrained(

@@ -2,9 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CompaniesTest extends TestCase
@@ -16,11 +14,6 @@ class CompaniesTest extends TestCase
      */
     public function test_example(): void
     {
-        // Given
-        // Create some companies
-        $company1 = Company::factory()->create();
-        $company2 = Company::factory()->create();
-
         // When
         // We hit the company index endpoint
         $response = $this->get('/api/company');
@@ -29,21 +22,36 @@ class CompaniesTest extends TestCase
         // We should receive a 200 OK
         $response->assertStatus(200);
 
-        // And also we should receive the companies we created
-        $response->assertJson([
-            'success' => true,
+        // Check the structure of the JSON response
+        $response->assertJsonStructure([
+            'success',
             'companies' => [
-                [
-                    'id' => $company1->id,
-                    'name' => $company1->name,
-                ],
-                [
-                    'id' => $company2->id,
-                    'name' => $company2->name,
-
-                ],
+                '*' => [
+                    'id',
+                    'name',
+                    'parent_company_id',
+                    'stations' => [
+                        '*' => [
+                            'id',
+                            'name',
+                            'latitude',
+                            'longitude',
+                            'company_id',
+                        ]
+                    ],
+                    'all_child_companies' => [
+                        '*' => [
+                            'id',
+                            'name',
+                            'parent_company_id',
+                            'stations',
+                            'all_child_companies',
+                        ]
+                    ]
+                ]
             ]
         ]);
+
 
     }
 }

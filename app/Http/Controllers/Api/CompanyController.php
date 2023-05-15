@@ -28,7 +28,7 @@ class CompanyController extends Controller
         $validated = $request->validated();
         try {
             $company = Company::create($validated);
-            return response()->json(['success' => true, 'message' => 'Company created successfully', 'company' => $company], Response::HTTP_CREATED);
+            return response()->json(['success' => true, 'message' => 'Company created successfully', 'company' => $company->refresh()], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             fullLog($e->getMessage());
             return response()->json(['success' => false, 'message' => 'Something went wrong. Try again later'], Response::HTTP_INTERNAL_SERVER_ERROR);
