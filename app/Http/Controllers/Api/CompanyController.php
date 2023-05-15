@@ -13,13 +13,14 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::main()->with('Stations')->with('allChildCompanies')->orderByDesc('id')->get();
+        $companies = Company::main()->with('Stations')->with('childCompanies')->orderByDesc('id')->get();
+
         return \response()->json(['success' => true, 'companies' => $companies]);
     }
 
     public function childCompanies($company_id)
     {
-        $companies = Company::where('parent_company_id', $company_id)->with('allChildCompanies')->with('Stations')->get(['id','name']);
+        $companies = Company::where('parent_company_id', $company_id)->with('childCompanies')->with('Stations')->get(['id','name']);
         return \response()->json(['success' => true, 'child_companies' => $companies]);
     }
 

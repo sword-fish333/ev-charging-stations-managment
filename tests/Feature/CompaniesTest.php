@@ -39,13 +39,13 @@ class CompaniesTest extends TestCase
                             'company_id',
                         ]
                     ],
-                    'all_child_companies' => [
+                    'child_companies' => [
                         '*' => [
                             'id',
                             'name',
                             'parent_company_id',
                             'stations',
-                            'all_child_companies',
+                            'child_companies',
                         ]
                     ]
                 ]

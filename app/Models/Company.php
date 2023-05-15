@@ -14,14 +14,14 @@ class Company extends Model
     protected $guarded = ['created_at', 'updated_at'];
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function childCompanies()
+    public function subCompanies()
     {
         return $this->hasMany(self::class, 'parent_company_id');
     }
 
-    public function allChildCompanies()
+    public function childCompanies()
     {
-        return $this->childCompanies()->with('Stations')->with('allChildCompanies');
+        return $this->subCompanies()->with('Stations')->with('childCompanies');
     }
 
     public function Stations()
@@ -36,7 +36,7 @@ class Company extends Model
 
     public function childCompaniesIds()
     {
-        $child_companies = $this->allChildCompanies;
+        $child_companies = $this->childCompanies;
         if (!$child_companies) {
             return [];
         }
