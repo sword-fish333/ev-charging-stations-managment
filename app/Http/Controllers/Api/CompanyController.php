@@ -14,7 +14,6 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::main()->with('Stations')->with('childCompanies')->orderByDesc('id')->get();
-
         return \response()->json(['success' => true, 'companies' => $companies]);
     }
 
